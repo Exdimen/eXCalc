@@ -1,6 +1,10 @@
 // #include "stdafx.h"
-#include "serialport.h"
+#include "SerialPort.h"
+#ifdef __WIN32
 #include<windows.h>
+#elif __linux__
+#include "CSerialPort/SerialPort.h"
+#endif
 #include <thread>
 #include <chrono>
 using namespace std::chrono;

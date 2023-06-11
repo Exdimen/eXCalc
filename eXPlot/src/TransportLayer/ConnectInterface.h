@@ -11,14 +11,15 @@
 
 #include "eXPlotConnect.h"
 #include "eXPlotMsgs.h"
-#include "SerialPort.h"
+#include "CSerialPort/SerialPort.h"
+#include "CSerialPort/SerialPortInfo.h"
 
 
 #define CHANNEL_THRESHOLD   0.2f        // 通道阈值 
 
 // using namespace sbus;
 
-extern CSerialPort* Serial;
+// extern CSerialPort* Serial;
 
 
 void Connect();

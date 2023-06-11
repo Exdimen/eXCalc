@@ -9,7 +9,9 @@ find_package(implot CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
 find_package(glm CONFIG REQUIRED)
-find_package(unofficial-kissfft CONFIG REQUIRED)
+find_package(kissfft CONFIG REQUIRED COMPONENT float)
+find_package(CSerialPort CONFIG REQUIRED)
+
 
 add_subdirectory(3rdparty/nativefiledialog-extended)
 add_subdirectory(3rdparty/glad)
@@ -38,15 +40,20 @@ file(GLOB SRC_FILES
 
 
 # 将源代码添加到此项目的可执行文件。
-add_executable (exPlot ${SRC_FILES})
+add_executable (eXPlot ${SRC_FILES})
 
-target_compile_features(exPlot PRIVATE cxx_std_17)
+target_compile_features(eXPlot PRIVATE cxx_std_17)
 
 
-target_link_libraries(exPlot PRIVATE nfd)
-target_link_libraries(exPlot PRIVATE imgui::imgui)
-target_link_libraries(exPlot PRIVATE glfw)
-target_link_libraries(exPlot PRIVATE implot::implot)
-# target_link_libraries(exPlot PRIVATE GLEW::GLEW)
-target_link_libraries(exPlot PRIVATE unofficial::kissfft::kissfft)
-target_link_libraries(exPlot PUBLIC glad)
+target_link_libraries(eXPlot PRIVATE nfd)
+target_link_libraries(eXPlot PRIVATE imgui::imgui)
+target_link_libraries(eXPlot PRIVATE glfw)
+target_link_libraries(eXPlot PRIVATE implot::implot)
+# target_link_libraries(eXPlot PRIVATE GLEW::GLEW)
+target_link_libraries(eXPlot PRIVATE kissfft::kissfft)
+target_link_libraries(eXPlot PUBLIC glad)
+
+if (CSerialPort_FOUND)
+	include_directories(${CSerialPort_INCLUDE_DIR})
+	target_link_libraries (eXPlot PUBLIC ${CSerialPort_LIBRARY})
+endif ()
