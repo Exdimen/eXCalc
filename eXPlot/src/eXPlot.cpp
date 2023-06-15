@@ -1,10 +1,16 @@
 ﻿#include "App.h"
 #include <stdio.h>
-#include <Windows.h>
+
 #include <queue>
 #include <thread>
 #include <random>
 #include "implot_internal.h"
+
+#ifdef _WIN32
+#include <Windows.h>
+#elif __linux__
+
+#endif
 
 #include "eXPlot.h"
 #include "SerialPort.h"
@@ -14,7 +20,6 @@
 # pragma execution_character_set("utf-8") 
 #endif
 
-HANDLE hCom = NULL;
 std::queue<int> qData;
 
 
@@ -48,7 +53,10 @@ struct ImLearn : public App {
 		std::vector<std::string> serialList;
 		ImGui::SetNextItemWidth(100);
 		if (ImGui::BeginCombo(" ", com.c_str())) {
-			EnumSerial(serialList);
+			// 获取串口列表
+			
+			// EnumSerial(serialList);
+			
 			if (serialList.size() == 0) ImGui::Selectable("NULL", false);
 			else {
 				for (int i = 0; i < serialList.size(); ++i) {
