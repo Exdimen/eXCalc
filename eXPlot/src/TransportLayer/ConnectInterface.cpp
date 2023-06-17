@@ -5,15 +5,13 @@
  *      Author: Exdimen
  */
 
+#include <chrono>
+#include <thread>
 
 #include "ConnectInterface.h"
 
 
 
-
-// 传输链接句柄
-debugger::eXPlotConnect* hepc = new debugger::eXPlotConnect(UartConnect::RX);
-CSerialPort* Serial = new CSerialPort();
 
 
 uint8_t read_data;
@@ -23,8 +21,8 @@ void setup();
 void loop();
 
 bool ComRead(uint8_t* buffer) {
-    if (Serial->m_bOpen == true) {
-        return Serial->readFromComm(buffer);
+    if (serial_port) {
+        return serial_port->readFromComm(buffer);
     }
     return false;
 }
@@ -36,6 +34,7 @@ void Connect()
     for(;;)
     {
         loop();
+        std::this_thread::sleep_for(std::chrono::microseconds(500));
     }
     /* USER CODE END ConnectTask */
 }
@@ -55,7 +54,7 @@ void loop() {
 //     hst->Update();
 //     #endif
     hepc->Update();
-    Serial->UpdateRxSpeed();
+    serial_interface->UpdateRxSpeed();
 //     htx->Update();
 // //    hsbus->Update();
 }

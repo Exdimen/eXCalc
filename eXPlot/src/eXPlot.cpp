@@ -6,14 +6,9 @@
 #include <random>
 #include "implot_internal.h"
 
-#ifdef _WIN32
-#include <Windows.h>
-#elif __linux__
 
-#endif
-
+#include "SerialInterface.h"
 #include "eXPlot.h"
-#include "SerialPort.h"
 #include "ConnectInterface.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) 
@@ -22,7 +17,8 @@
 
 std::queue<int> qData;
 
-
+// itas109::CSerialPort serial_port;
+// SerialInterface serial_interface(&serial_port);
 
 PlotData pdata = {0};
 
@@ -50,19 +46,19 @@ struct ImLearn : public App {
 		ImGui::SameLine();
 		//	//设置下拉列表框 & 枚举选项
 		static std::string com = "NULL";
-		std::vector<std::string> serialList;
+		std::vector<SerialPortInfo> serialList;
 		ImGui::SetNextItemWidth(100);
 		if (ImGui::BeginCombo(" ", com.c_str())) {
 			// 获取串口列表
-			
+			serialList = CSerialPortInfo::availablePortInfos();
 			// EnumSerial(serialList);
 			
 			if (serialList.size() == 0) ImGui::Selectable("NULL", false);
 			else {
 				for (int i = 0; i < serialList.size(); ++i) {
-					bool isSelect = serialList.at(i) == com;
-					if (ImGui::Selectable(serialList.at(i).c_str(), isSelect)) {
-						com = serialList.at(i);
+					bool isSelect = serialList[i].portName == com;
+					if (ImGui::Selectable(serialList[i].portName, isSelect)) {
+						com = serialList[i].portName;
 					}
 				}
 			}
@@ -79,21 +75,21 @@ struct ImLearn : public App {
 		ImGui::SameLine();
 		// 点击连接按钮事件
 		std::string strState;
-		if (Serial->m_bOpen) {
+		if (serial_port->isOpen()) {
 			ImGui::SameLine();
 			if (ImGui::Button("断开")) {
-				Serial->closeComm();
+				serial_port.close();
 			}
 		}
 		else {
 			if (ImGui::Button("连接")) {
-				Serial->setConfig(com,  baud_rate, 8, NOPARITY, 1);
-				Serial->openComm();
+				serial_port.init(com.c_str(),baud_rate);
+				serial_port.open();
 			}
 		}
 
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);
-		ImGui::Text("eXPlot V0.0.1 Exdimen");
+		ImGui::Text("eXPlot V0.0.2 Exdimen");
 
 		// 状态栏标题行
 		{ float delta_line = 0.15f;
@@ -108,16 +104,16 @@ struct ImLearn : public App {
 
 
 		// 状态栏状态行
-			if (Serial->m_bOpen) {
+			if (serial_port.isOpen()) {
 				ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "Connect");
 			}
 			else {
 				ImGui::TextDisabled("Disconnect");
 			}
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
-			ImGui::Text("%d",Serial->rx_cnt);
+			ImGui::Text("%d",serial_interface.get_rx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
-			ImGui::Text("%.2f",Serial->rx_speed);
+			ImGui::Text("%.2f",serial_interface.get_rx_speed());
 		}
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);
 		ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
