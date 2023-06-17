@@ -107,6 +107,7 @@
 #include <sigslot.h>
 #include <chrono>
 #include <stdint.h>
+#include <folly/ProducerConsumerQueue.h>
 using namespace itas109;
 using namespace std;
 static void EnumSerial(std::vector<std::string>& serialList) {
@@ -138,15 +139,22 @@ public:
     void OnReceiveMessage() {
         if (!serial_port)
             return;
-        char 
-        rx_len = serial_port->readAllData(str);
+        char read_str[1024];
+        rx_len = serial_port->readAllData(read_str);
         if (rx_len > 0) {
-            str[rx_len] = '\0';
+            for (int i=0; i<rx_len; i++) {
+                str.write(read_str[i]);
+            }
             rx_cnt += rx_len;
         }
     }
 
-    bool SerialRecevice(uint8_t* data);
+    bool SerialRecevice(uint8_t* data) {
+        if (str.isEmpty())
+            return false;
+        str.read((char &)*data);
+        return true;
+    }
 
     void UpdateRxSpeed() {
         chrono::system_clock::time_point now = chrono::system_clock::now();
@@ -162,7 +170,8 @@ public:
     float get_rx_speed() {return rx_speed;}
 private:
     CSerialPort* serial_port;
-    char str[1024];
+    folly::ProducerConsumerQueue<char> str{1024};
+    // char str[1024];
     int rx_len;
     int rx_cnt;
     float rx_speed;     // 接收速度 kbps

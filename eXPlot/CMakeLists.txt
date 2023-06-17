@@ -14,7 +14,7 @@ find_package(CSerialPort CONFIG REQUIRED)
 
 # sigslot
 find_path(SIGSLOT_INCLUDE_DIRS "sigslot.h")
-target_include_directories(eXPlot PRIVATE ${SIGSLOT_INCLUDE_DIRS})
+
 # folly
 find_package(folly CONFIG REQUIRED)
 
@@ -27,7 +27,7 @@ include_directories("src/Connectivity")
 include_directories("src/TransportLayer")
 include_directories("3rdparty")
 include_directories("3rdparty/imgui_backends")
-
+include_directories(${CSerialPort_INCLUDE_DIR})
 
 
 file(GLOB SRC_FILES 
@@ -51,6 +51,7 @@ add_executable (eXPlot ${SRC_FILES})
 target_compile_features(eXPlot PRIVATE cxx_std_17)
 
 
+
 target_link_libraries(eXPlot PRIVATE nfd)
 target_link_libraries(eXPlot PRIVATE imgui::imgui)
 target_link_libraries(eXPlot PRIVATE glfw)
@@ -59,9 +60,6 @@ target_link_libraries(eXPlot PRIVATE implot::implot)
 target_link_libraries(eXPlot PRIVATE kissfft::kissfft)
 target_link_libraries(eXPlot PUBLIC glad)
 target_link_libraries(eXPlot PRIVATE Folly::folly Folly::folly_deps Folly::follybenchmark Folly::folly_test_util)
+target_link_libraries (eXPlot PUBLIC ${CSerialPort_LIBRARY})
 
-
-if (CSerialPort_FOUND)
-	include_directories(${CSerialPort_INCLUDE_DIR})
-	target_link_libraries (eXPlot PUBLIC ${CSerialPort_LIBRARY})
-endif ()
+target_include_directories(eXPlot PRIVATE ${SIGSLOT_INCLUDE_DIRS})

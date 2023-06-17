@@ -21,8 +21,8 @@ void setup();
 void loop();
 
 bool ComRead(uint8_t* buffer) {
-    if (serial_port) {
-        return serial_port->readFromComm(buffer);
+    if (serial_interface) {
+        return serial_interface->SerialRecevice(buffer);
     }
     return false;
 }
