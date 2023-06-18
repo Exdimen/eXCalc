@@ -10,3 +10,22 @@ sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-co
 sudo apt-get install build-essential libgtk-3-dev
 ```
 
+根目录底下安装vcpkg
+
+```shell
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.sh
+```
+
+使用vcpkg清单模式配置依赖（vcpkg.json）
+
+###### 编译代码
+
+```shell
+mkdir build
+cd build
+cmake ..
+make
+```
+
