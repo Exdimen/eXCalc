@@ -47,7 +47,7 @@ struct ImLearn : public App {
 		//	//设置下拉列表框 & 枚举选项
 		static std::string com = "NULL";
 		std::vector<SerialPortInfo> serialList;
-		ImGui::SetNextItemWidth(100);
+		ImGui::SetNextItemWidth(300);
 		if (ImGui::BeginCombo(" ", com.c_str())) {
 			// 获取串口列表
 			serialList = CSerialPortInfo::availablePortInfos();
@@ -64,7 +64,7 @@ struct ImLearn : public App {
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::PushItemWidth(100);
+		ImGui::PushItemWidth(300);
 		ImGui::SameLine();
 		static int baud_rate = 115200;
 		ImGui::Text("波特率：");
@@ -78,13 +78,15 @@ struct ImLearn : public App {
 		if (serial_port->isOpen()) {
 			ImGui::SameLine();
 			if (ImGui::Button("断开")) {
-				serial_port.close();
+				serial_port->close();
+				serial_port->disconnectReadEvent();
 			}
 		}
 		else {
 			if (ImGui::Button("连接")) {
-				serial_port.init(com.c_str(),baud_rate);
-				serial_port.open();
+				serial_port->init(com.c_str(),baud_rate);
+				serial_port->open();
+				serial_port->connectReadEvent(serial_interface);
 			}
 		}
 
@@ -104,16 +106,16 @@ struct ImLearn : public App {
 
 
 		// 状态栏状态行
-			if (serial_port.isOpen()) {
+			if (serial_port->isOpen()) {
 				ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "Connect");
 			}
 			else {
 				ImGui::TextDisabled("Disconnect");
 			}
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
-			ImGui::Text("%d",serial_interface.get_rx_cnt());
+			ImGui::Text("%d",serial_interface->get_rx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
-			ImGui::Text("%.2f",serial_interface.get_rx_speed());
+			ImGui::Text("%.2f",serial_interface->get_rx_speed());
 		}
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);
 		ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
@@ -351,7 +353,7 @@ struct ImLearn : public App {
 
 
 void App(int argc, char const* argv[]) {
-	ImLearn app("eXPlot", 960, 540, argc, argv);
+	ImLearn app("eXPlot", 1920, 1080, argc, argv);
 	app.Run();
 }
 

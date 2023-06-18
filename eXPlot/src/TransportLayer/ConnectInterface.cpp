@@ -12,7 +12,10 @@
 
 
 
+debugger::eXPlotConnect* hepc = new debugger::eXPlotConnect(UartConnect::RX);
+itas109::CSerialPort* serial_port = new itas109::CSerialPort();
 
+edm_comm::SerialInterface* serial_interface = new edm_comm::SerialInterface(serial_port);
 
 uint8_t read_data;
 uint8_t send_data;

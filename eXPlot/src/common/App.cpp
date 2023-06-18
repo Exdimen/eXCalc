@@ -150,7 +150,8 @@ App::App(std::string title, int w, int h, int argc, char const *argv[])
     const bool no_vsync = result["vsync"].as<bool>();
     const bool use_msaa = result["msaa"].as<bool>();
     const bool im_style = result["imgui"].as<bool>();
-    NvOptimusEnablement = AmdPowerXpressRequestHighPerformance = result["gpu"].as<bool>();
+//  WIN32
+//    NvOptimusEnablement = AmdPowerXpressRequestHighPerformance = result["gpu"].as<bool>();
     UsingDGPU = result["gpu"].as<bool>();
 
 #ifdef _DEBUG
@@ -252,7 +253,7 @@ App::App(std::string title, int w, int h, int argc, char const *argv[])
 
     static const ImWchar fa_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
     
-    io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/msyh.ttc", 16.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
+    io.Fonts->AddFontFromFileTTF("/usr/share/fonts/truetype/arphic/uming.ttc", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
 
     if (im_style) {
         io.Fonts->AddFontDefault();
