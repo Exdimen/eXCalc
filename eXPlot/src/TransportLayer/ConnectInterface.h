@@ -16,6 +16,9 @@
 #include "eXPlotConnect.h"
 #include "eXPlotMsgs.h"
 
+#include "VisionSensorConnect.h"
+#include "VisionSensorMsgs.h"
+
 #include "SerialInterface.h"
 
 // 传输链接句柄
@@ -26,7 +29,7 @@
 
 // using namespace sbus;
 
-
+extern sensor::VisionSensorConnect* hvsc;
 extern debugger::eXPlotConnect* hepc;
 extern itas109::CSerialPort* serial_port;
 extern edm_comm::SerialInterface* serial_interface;

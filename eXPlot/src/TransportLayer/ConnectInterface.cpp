@@ -11,7 +11,7 @@
 #include "ConnectInterface.h"
 
 
-
+sensor::VisionSensorConnect* hvsc = new sensor::VisionSensorConnect(UartConnect::RX);
 debugger::eXPlotConnect* hepc = new debugger::eXPlotConnect(UartConnect::RX);
 itas109::CSerialPort* serial_port = new itas109::CSerialPort();
 
@@ -45,8 +45,8 @@ void Connect()
 void setup() {
 
 
-    hepc->InitRx(ComRead);
-
+    // hepc->InitRx(ComRead);
+    hvsc->InitRx(ComRead);
     // // 配置循环发送句柄
     // htx->SetUartConnect(hepc);
     // htx->AddMsg(msg_vt, "value plot", 1, true);
@@ -56,6 +56,7 @@ void loop() {
 //     #ifdef SBUS_TEMP
 //     hst->Update();
 //     #endif
+    hvsc->Update();
     hepc->Update();
     serial_interface->UpdateRxSpeed();
 //     htx->Update();
