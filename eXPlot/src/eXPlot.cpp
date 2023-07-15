@@ -101,8 +101,9 @@ struct ImLearn : public App {
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
 			ImGui::Text("Rx字节数");
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
-			ImGui::Text("当前传输数据速率Kbps");
-		
+			ImGui::Text("发送数据速率Kbps");
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*4);
+			ImGui::Text("接收数据速率Kbps");
 
 
 		// 状态栏状态行
@@ -112,9 +113,13 @@ struct ImLearn : public App {
 			else {
 				ImGui::TextDisabled("Disconnect");
 			}
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line);
+			ImGui::Text("%d",serial_interface->get_tx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
 			ImGui::Text("%d",serial_interface->get_rx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
+			ImGui::Text("%.2f",serial_interface->get_tx_speed());
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*4);
 			ImGui::Text("%.2f",serial_interface->get_rx_speed());
 		}
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);

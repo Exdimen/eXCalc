@@ -52,13 +52,13 @@ void UartConnect::Update() {
 	}
 }
 
-void UartConnect::InitRx(UartRecevice _read_func) {
+void UartConnect::Init(UartRecevice _read_func) {
 	// 设置接收函数
     SetReadFunc(_read_func);
 	
 	is_initalized = true;
 }
-void UartConnect::InitTx(UartTransmit _transmit_func) {
+void UartConnect::Init(UartTransmit _transmit_func) {
 	SetTransmitFunc(_transmit_func);
 
 	is_initalized = true;

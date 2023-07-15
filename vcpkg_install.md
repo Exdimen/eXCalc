@@ -29,3 +29,9 @@ cmake ..
 make
 ```
 
+USB开启权限
+ 
+``` shell
+sudo chmod 777 /dev/ttyUSB0
+```
+

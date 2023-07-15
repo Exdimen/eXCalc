@@ -85,8 +85,8 @@ public:
 	UartConnect();
 	virtual ~UartConnect();
 
-	void InitRx(UartRecevice read_func);
-	void InitTx(UartTransmit transmit_func);
+	void Init(UartRecevice read_func);
+	void Init(UartTransmit transmit_func);
 	virtual bool LaunchSend(msg::Message* msg) {return false;}
 	virtual void Update();
 };

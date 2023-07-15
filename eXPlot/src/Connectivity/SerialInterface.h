@@ -14,8 +14,11 @@ public:
     SerialInterface (CSerialPort* _serial_port) {
         rx_len = 0;
         rx_cnt = 0;
+        tx_cnt = 0;
         last_rx_cnt = 0;
+        last_tx_cnt = 0;
         rx_speed = 0.0f;
+        tx_speed = 0.0f;
         serial_port = _serial_port;
         last_speedcalc_timestamp = chrono::system_clock::now();
     }
@@ -43,6 +46,16 @@ public:
         str.read((char &)*data);
         return true;
     }
+    bool SerialTransmit(uint8_t* data, uint16_t len) {
+        if (!serial_port)
+            return false;
+        int ret = serial_port->writeData(data, len);
+        if (ret != -1) {
+            tx_cnt += ret;
+            return true;
+        }
+        return false;
+    }
 
     void UpdateRxSpeed() {
         chrono::system_clock::time_point now = chrono::system_clock::now();
@@ -50,20 +63,27 @@ public:
         if (delta_time.count() < 300) 
             return;
         rx_speed = (float) (rx_cnt - last_rx_cnt)*10 / delta_time.count(); // None 8 1速度下
+        tx_speed = (float) (tx_cnt - last_tx_cnt)*10 / delta_time.count(); // None 8 1速度下
         last_speedcalc_timestamp = chrono::system_clock::now();
         last_rx_cnt = rx_cnt;
+        last_tx_cnt = tx_cnt;
     }
-
+    int get_tx_cnt() {return tx_cnt;}
     int get_rx_cnt() {return rx_cnt;}
     float get_rx_speed() {return rx_speed;}
+    float get_tx_speed() {return tx_speed;}
+
 private:
     CSerialPort* serial_port;
     folly::ProducerConsumerQueue<char> str{1024};
     int rx_len;
     int rx_cnt;
+    int tx_cnt;
     float rx_speed;     // 接收速度 kbps
+    float tx_speed;     // 发送速率 kbps
     chrono::system_clock::time_point last_speedcalc_timestamp;
     int last_rx_cnt;
+    int last_tx_cnt;
     
 };
 }

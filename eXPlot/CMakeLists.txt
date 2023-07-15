@@ -30,6 +30,7 @@ include_directories("src")
 include_directories("src/common")
 include_directories("src/Connectivity")
 include_directories("src/TransportLayer")
+include_directories("src/SystemLib")
 include_directories("3rdparty")
 include_directories("3rdparty/imgui_backends")
 include_directories(${CSerialPort_INCLUDE_DIR})
@@ -39,6 +40,7 @@ file(GLOB SRC_FILES
 	"src/*.cpp"
 	"src/Connectivity/*.h"
 	"src/Connectivity/*.cpp" 
+	"src/SystemLib/*.cpp"
 	"src/TransportLayer/*.h"
 	"src/TransportLayer/*.cpp" 
 	"src/common/*.h"
