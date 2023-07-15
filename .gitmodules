@@ -1,3 +1,8 @@
 [submodule "eXPlot/3rdparty/implot"]
 	path = eXPlot/3rdparty/implot
 	url = https://github.com/epezent/implot.git
+[submodule "vcpkg"]
+	path = vcpkg
+	url = https://github.com/microsoft/vcpkg
+[submodule "eXPlot/3rdparty/implot/"]
+	branch = v0.14
