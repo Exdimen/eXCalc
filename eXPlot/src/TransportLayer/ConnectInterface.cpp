@@ -77,7 +77,7 @@ void loop() {
 //     hst->Update();
 //     #endif
     // 接收通信句柄 
-    hvsc->Update();
+    // hvsc->Update();
     hepc->Update();
     // 定期发送句柄
     htx->Update();
