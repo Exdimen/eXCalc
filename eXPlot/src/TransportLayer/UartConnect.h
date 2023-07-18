@@ -36,6 +36,7 @@ protected:
 	uint16_t payload_size;			//载荷长度
 	uint8_t protocol_size;			//协议帧除载荷外总长
 
+	uint8_t tx_payload[300];		// 发送帧头载荷
 
 	/**
 	 * @brief 解析函数需要的成员变量
@@ -54,8 +55,10 @@ protected:
 	uint8_t crc[4];
 	uint8_t crc_len;
 	uint8_t crc_cnt;
-	uint8_t buffer[300];		// 发送或接受组成缓冲区
-	uint16_t cnt;				// 接收缓冲区计数
+	uint8_t rx_buffer[300];		// 接受组成缓冲区
+	uint16_t rx_cnt;			// 接收缓冲区计数
+	uint8_t tx_buffer[300];		// 发送缓冲区
+	uint8_t tx_cnt;				// 发送缓冲区计数
 
 	bool is_complete;			// 是否完成接收或发送准备
 	bool is_initalized;			// 是否完成初始化

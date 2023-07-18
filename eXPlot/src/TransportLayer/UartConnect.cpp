@@ -18,8 +18,10 @@ UartConnect::UartConnect() {
 	crc_cnt = 0;
 	rx_msg = nullptr;
 	tx_msg = nullptr;
-	cont_type = RX_AND_TX;
+	cont_type = RX;
 	seq = 0;
+	rx_cnt = 0;
+	tx_cnt = 0;
 }
 
 UartConnect::~UartConnect() {

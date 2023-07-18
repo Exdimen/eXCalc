@@ -30,8 +30,15 @@ make
 ```
 
 USB开启权限
- 
+
 ``` shell
 sudo chmod 777 /dev/ttyUSB0
+```
+
+USB串口打不开，可能是brltty占用了串口
+
+``` shell
+sudo dmesg | grep brltty
+sudo apt remove brltty
 ```
 

@@ -4,7 +4,10 @@
 #include <vector>
 #include <chrono>
 #include <stdint.h>
-#include <folly/ProducerConsumerQueue.h>
+// #include <folly/ProducerConsumerQueue.h>
+
+#include "ring_buffer.h"
+
 using namespace itas109;
 using namespace std;
 
@@ -21,6 +24,8 @@ public:
         tx_speed = 0.0f;
         serial_port = _serial_port;
         last_speedcalc_timestamp = chrono::system_clock::now();
+
+        RingBuf_Init(&rx_buffer_handle, (uint8_t*) &rx_buffer, 1024);
     }
 
     void onReadEvent(const char *portName, unsigned int readBufferLen) {
@@ -28,12 +33,10 @@ public:
             return;
         if (readBufferLen == 0)
             return;
-        char *data = new char[readBufferLen];
+        uint8_t *data = new uint8_t[readBufferLen];
         rx_len = serial_port->readData(data, readBufferLen);
         if (rx_len > 0) {
-            for (int i=0; i<rx_len; i++) {
-                str.write(data[i]);
-            }
+            RingBuf_Put(&rx_buffer_handle, data, rx_len);
             rx_cnt += rx_len;
         }
         delete[] data;
@@ -41,9 +44,11 @@ public:
     }
 
     bool SerialRecevice(uint8_t* data) {
-        if (str.isEmpty())
+        uint16_t fb_len;
+        fb_len = RingBuf_Get(&rx_buffer_handle, data, 1);
+        if (fb_len == 0) {
             return false;
-        str.read((char &)*data);
+        }
         return true;
     }
     bool SerialTransmit(uint8_t* data, uint16_t len) {
@@ -75,7 +80,10 @@ public:
 
 private:
     CSerialPort* serial_port;
-    folly::ProducerConsumerQueue<char> str{1024};
+    // folly::ProducerConsumerQueue<char> str{1024};
+    T_RingBuffer rx_buffer_handle;
+    uint8_t rx_buffer[1024];
+
     int rx_len;
     int rx_cnt;
     int tx_cnt;

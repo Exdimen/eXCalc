@@ -1,6 +1,6 @@
 [submodule "eXPlot/3rdparty/implot"]
 	path = eXPlot/3rdparty/implot
-	url = https://github.com/epezent/implot.git
+	url = git@codeup.aliyun.com:645f633b4fbe916d80fa681c/Library/implot.git
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/microsoft/vcpkg
