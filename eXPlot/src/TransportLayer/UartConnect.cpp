@@ -20,8 +20,12 @@ UartConnect::UartConnect() {
 	tx_msg = nullptr;
 	cont_type = RX;
 	seq = 0;
+	tx_seq = 0;
 	rx_cnt = 0;
 	tx_cnt = 0;
+	tx_address = 0;
+	tx_msg_id = 0;
+	tx_payload_size = 0;
 }
 
 UartConnect::~UartConnect() {

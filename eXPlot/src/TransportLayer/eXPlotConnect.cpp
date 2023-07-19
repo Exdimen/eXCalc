@@ -101,35 +101,35 @@ void eXPlotConnect::Decode() {
 void eXPlotConnect::Send() {
 	protocol_size = 0;
 	tx_buffer[protocol_size++] = header;
-	tx_buffer[protocol_size++] = seq;
-	tx_buffer[protocol_size++] = msg_id;
-	tx_buffer[protocol_size++] = payload_size;
-	memcpy(&tx_buffer[protocol_size], &tx_payload[0], payload_size);
-	protocol_size += payload_size;
+	tx_buffer[protocol_size++] = tx_seq;
+	tx_buffer[protocol_size++] = tx_msg_id;
+	tx_buffer[protocol_size++] = tx_payload_size;
+	memcpy(&tx_buffer[protocol_size], &tx_payload[0], tx_payload_size);
+	protocol_size += tx_payload_size;
 	GenerateCheck();
-	memcpy(&tx_buffer[protocol_size], &crc[0], crc_len);
+	memcpy(&tx_buffer[protocol_size], &tx_crc[0], crc_len);
 	protocol_size += crc_len;
 	transmit_func(&tx_buffer[0], protocol_size);
 }
 uint8_t eXPlotConnect::GenerateCheck() {
 	uint16_t _crc;
 	crc_len = 2;
-	_crc = ModBusCRC16(&rx_buffer[0], payload_size);
-	memcpy(&crc[0], &_crc, crc_len);
+	_crc = ModBusCRC16(&rx_buffer[0], tx_payload_size);
+	memcpy(&tx_crc[0], &_crc, crc_len);
 	return crc_len;
 }
 bool eXPlotConnect::LaunchSend(msg::Message* msg) {
 	if (!is_initalized) return false;
 	if (msg == nullptr) return false;
 
-	seq ++;
-	msg_id = msg->msg_id;
-	address = msg->address;
+	tx_seq ++;
+	tx_msg_id = msg->msg_id;
+	tx_address = msg->address;
 	msg->Encode(&tx_payload[0]);
-	payload_size = msg->GetLen();
+	tx_payload_size = msg->GetLen();
 	tx_msg = msg;
 
-	// Send();
+	Send();
 	return true;
 }
 } /* namespace debugger */

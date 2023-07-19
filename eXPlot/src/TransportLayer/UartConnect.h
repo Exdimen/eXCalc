@@ -36,7 +36,16 @@ protected:
 	uint16_t payload_size;			//载荷长度
 	uint8_t protocol_size;			//协议帧除载荷外总长
 
+	/**
+	 * @brief 发送帧
+	 * 
+	 */
+	uint8_t tx_address;				// 地址
+	uint8_t tx_msg_id;				// ID
+	uint8_t tx_seq;					// 发送包序号
 	uint8_t tx_payload[300];		// 发送帧头载荷
+	uint16_t tx_payload_size;		// 发送载荷长度
+	
 
 	/**
 	 * @brief 解析函数需要的成员变量
@@ -53,6 +62,7 @@ protected:
 	uint8_t state;
 	uint8_t payload_cnt;
 	uint8_t crc[4];
+	uint8_t tx_crc[4];
 	uint8_t crc_len;
 	uint8_t crc_cnt;
 	uint8_t rx_buffer[300];		// 接受组成缓冲区
