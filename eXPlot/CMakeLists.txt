@@ -21,7 +21,7 @@ target_include_directories(implot PUBLIC "3rdparty/implot")
 # find_path(SIGSLOT_INCLUDE_DIRS "sigslot.h")
 
 # folly
-find_package(folly CONFIG REQUIRED)
+# find_package(folly CONFIG REQUIRED)
 
 add_subdirectory(3rdparty/nativefiledialog-extended)
 add_subdirectory(3rdparty/glad)
@@ -65,6 +65,6 @@ target_link_libraries(eXPlot PRIVATE glfw glad)
 # target_link_libraries(eXPlot PRIVATE implot::implot)
 # target_link_libraries(eXPlot PRIVATE GLEW::GLEW)
 target_link_libraries(eXPlot PRIVATE kissfft::kissfft)
-target_link_libraries(eXPlot PRIVATE Folly::folly Folly::folly_deps Folly::follybenchmark Folly::folly_test_util)
+# target_link_libraries(eXPlot PRIVATE Folly::folly Folly::folly_deps Folly::follybenchmark Folly::folly_test_util)
 target_link_libraries (eXPlot PUBLIC ${CSerialPort_LIBRARY})
 # target_include_directories(eXPlot PRIVATE ${SIGSLOT_INCLUDE_DIRS})

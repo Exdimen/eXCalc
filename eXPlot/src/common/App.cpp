@@ -253,7 +253,13 @@ App::App(std::string title, int w, int h, int argc, char const *argv[])
 
     static const ImWchar fa_ranges[] = {ICON_MIN_FA, ICON_MAX_FA, 0};
     
+    #ifdef _WIN32
+    io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/msyh.ttc", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
+    #elif __linux__
     io.Fonts->AddFontFromFileTTF("/usr/share/fonts/truetype/arphic/uming.ttc", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
+    #endif 
+
+    
 
     if (im_style) {
         io.Fonts->AddFontDefault();
