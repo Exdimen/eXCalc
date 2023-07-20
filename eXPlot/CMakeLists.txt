@@ -4,7 +4,7 @@
 cmake_minimum_required (VERSION 3.8)
 
 
-find_package(imgui CONFIG REQUIRED)
+# find_package(imgui CONFIG REQUIRED)
 # find_package(implot CONFIG REQUIRED)
 find_package(glad CONFIG REQUIRED)
 find_package(glfw3 CONFIG REQUIRED)
@@ -12,16 +12,25 @@ find_package(glm CONFIG REQUIRED)
 find_package(kissfft CONFIG REQUIRED COMPONENT float)
 find_package(CSerialPort CONFIG REQUIRED)
 
-# implot
+#imgui
+file(GLOB IMGUI_SOURCE_FILES 	"3rdparty/imgui/*.cpp"
+								"3rdparty/imgui/backends/glfw.cpp"
+								"3rdparty/imgui/backends/opengl3.cpp")
+add_library(imgui SHARED ${IMGUI_SOURCE_FILES})
+target_include_directories(imgui PUBLIC "3rdparty/imgui/" "3rdparty/imgui/backends/")
 
+# implot
 file(GLOB IMPLOT_SOURCE_FILES "3rdparty/implot/*.cpp")
 add_library(implot SHARED ${IMPLOT_SOURCE_FILES})
-target_include_directories(implot PUBLIC "3rdparty/implot")
+target_include_directories(implot PUBLIC "3rdparty/implot" "3rdparty/imgui/" "3rdparty/imgui/backends/")
+target_link_libraries(implot PRIVATE imgui)
 # sigslot
 # find_path(SIGSLOT_INCLUDE_DIRS "sigslot.h")
 
 # folly
 # find_package(folly CONFIG REQUIRED)
+
+
 
 add_subdirectory(3rdparty/nativefiledialog-extended)
 add_subdirectory(3rdparty/glad)
@@ -32,7 +41,7 @@ include_directories("src/Connectivity")
 include_directories("src/TransportLayer")
 include_directories("src/SystemLib")
 include_directories("3rdparty")
-include_directories("3rdparty/imgui_backends")
+# include_directories("3rdparty/imgui_backends")
 include_directories(${CSerialPort_INCLUDE_DIR})
 
 file(GLOB SRC_FILES 
@@ -47,8 +56,7 @@ file(GLOB SRC_FILES
 	"src/common/*.h"
 	"src/common/*.cpp"
 	"src/common/Fonts/*.h"
-	"src/common/Fonts/*.cpp"
-	"3rdparty/imgui_backends/*.cpp")
+	"src/common/Fonts/*.cpp")
 
 
 
@@ -59,7 +67,7 @@ target_compile_features(eXPlot PRIVATE cxx_std_17)
 
 target_link_libraries(eXPlot PRIVATE implot)
 target_link_libraries(eXPlot PRIVATE nfd)
-target_link_libraries(eXPlot PRIVATE imgui::imgui)
+# target_link_libraries(eXPlot PRIVATE imgui::imgui)
 target_link_libraries(eXPlot PRIVATE glfw glad)
 
 # target_link_libraries(eXPlot PRIVATE implot::implot)
