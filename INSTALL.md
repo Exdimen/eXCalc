@@ -1,11 +1,34 @@
-##### ubuntu 安装
+##### Windows编译
 
-###### vcpkg install 
+###### vcpkg
+
+```shell
+git clone https://github.com/microsoft/vcpkg
+cd vcpkg
+.\bootstrap-vcpkg.bat
+```
+
+###### 工具链
+
+CMake+MinGW
+
+MinGW的WIN32版本不支持std::thread，使用mingw-std-threads
+
+```shell
+cmake -G "MinGW Makefiles" ..
+mingw32-make.exe 
+```
+
+
+
+##### Linux编译（ubuntu）
+
+###### vcpkg install
 
 安装glfw3需要先安装
 
 ```shell
-sudo apt-get install libx11-dev	
+sudo apt-get install libx11-dev    
 sudo apt install libxinerama-dev libxcursor-dev xorg-dev libglu1-mesa-dev pkg-config
 sudo apt-get install build-essential libgtk-3-dev
 ```
@@ -15,7 +38,7 @@ sudo apt-get install build-essential libgtk-3-dev
 ```shell
 git clone https://github.com/microsoft/vcpkg
 cd vcpkg
-.\bootstrap-vcpkg.sh
+./bootstrap-vcpkg.sh
 ```
 
 使用vcpkg清单模式配置依赖（vcpkg.json）
@@ -31,14 +54,15 @@ make
 
 USB开启权限
 
-``` shell
+```shell
 sudo chmod 777 /dev/ttyUSB0
 ```
 
 USB串口打不开，可能是brltty占用了串口
 
-``` shell
+```shell
 sudo dmesg | grep brltty
 sudo apt remove brltty
 ```
+
 

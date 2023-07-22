@@ -6,8 +6,12 @@
  */
 
 #include <chrono>
+// #ifdef _WIN32
+//     #include "mingw.thread.h"
+// #elif __linux__
+//     #include <thread>
+// #endif
 #include <thread>
-
 #include "ConnectInterface.h"
 
 

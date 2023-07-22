@@ -6,6 +6,9 @@
 	url = https://github.com/microsoft/vcpkg
 [submodule "eXPlot/3rdparty/implot/"]
 	branch = v0.14
+[submodule "eXPlot/3rdparty/cserialport"]
+	path = eXPlot/3rdparty/cserialport
+	url = https://gitee.com/itas109/CSerialPort.git
 [submodule "eXPlot/3rdparty/imgui"]
 	path = eXPlot/3rdparty/imgui
 	url = https://github.com/ocornut/imgui.git
