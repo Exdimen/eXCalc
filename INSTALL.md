@@ -10,13 +10,14 @@ cd vcpkg
 
 ###### 工具链
 
-CMake+MinGW
+CMake+TDM-GCC
 
-MinGW的WIN32版本不支持std::thread，使用mingw-std-threads
+MinGW的WIN32版本不支持std::thread，POSIX版本支持std::thread，但对
 
 ```shell
 cmake -G "MinGW Makefiles" ..
-mingw32-make.exe 
+mingw32-make.exe -j12
+
 ```
 
 
@@ -64,5 +65,3 @@ USB串口打不开，可能是brltty占用了串口
 sudo dmesg | grep brltty
 sudo apt remove brltty
 ```
-
-
