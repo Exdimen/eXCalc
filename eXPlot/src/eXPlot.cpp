@@ -289,62 +289,62 @@ struct ImLearn : public App {
 
 			// plot waveforms
 			if (ImPlot::BeginPlot("Data",ImVec2(-1,-1))) {
-				// ImPlotAxisFlags x_axis_param;
-				// ImPlotAxisFlags y_axis_param;
-				// if (is_x_autofit) {
-				// 	x_axis_param = ImPlotAxisFlags_AutoFit;
-				// } else {
-				// 	x_axis_param = ImPlotAxisFlags_None;
-				// }
-				// if (is_y_autofit) {
-				// 	y_axis_param = ImPlotAxisFlags_AutoFit;
-				// } else {
-				// 	y_axis_param = ImPlotAxisFlags_None;
-				// }
-				// switch (plot_mode) {
-				// 	case 0:	{	// 时域模式 
-				// 		switch (time_scale) {
-				// 			case 0:
-				// 				ImPlot::SetupAxes("Time [us]","Signal", x_axis_param, y_axis_param);
-				// 				break;
-				// 			case 1:
-				// 				ImPlot::SetupAxes("Time [ms]","Signal", x_axis_param, y_axis_param);
-				// 				break;
-				// 			case 2:
-				// 				ImPlot::SetupAxes("Time [s]","Signal", x_axis_param, y_axis_param);
-				// 				break;
-				// 			case 3:
-				// 				ImPlot::SetupAxes("Time [min]","Signal", x_axis_param, y_axis_param);
-				// 				break;
-				// 		}
-				// 		ImPlot::GetStyle().LineWeight = 2;
-				// 		ImPlot::SetupLegend(ImPlotLocation_NorthEast);
+				ImPlotAxisFlags x_axis_param;
+				ImPlotAxisFlags y_axis_param;
+				if (is_x_autofit) {
+					x_axis_param = ImPlotAxisFlags_AutoFit;
+				} else {
+					x_axis_param = ImPlotAxisFlags_None;
+				}
+				if (is_y_autofit) {
+					y_axis_param = ImPlotAxisFlags_AutoFit;
+				} else {
+					y_axis_param = ImPlotAxisFlags_None;
+				}
+				switch (plot_mode) {
+					case 0:	{	// 时域模式 
+						switch (time_scale) {
+							case 0:
+								ImPlot::SetupAxes("Time [us]","Signal", x_axis_param, y_axis_param);
+								break;
+							case 1:
+								ImPlot::SetupAxes("Time [ms]","Signal", x_axis_param, y_axis_param);
+								break;
+							case 2:
+								ImPlot::SetupAxes("Time [s]","Signal", x_axis_param, y_axis_param);
+								break;
+							case 3:
+								ImPlot::SetupAxes("Time [min]","Signal", x_axis_param, y_axis_param);
+								break;
+						}
+						ImPlot::GetStyle().LineWeight = 2;
+						ImPlot::SetupLegend(ImPlotLocation_NorthEast);
 
-				// 		// ImHasFlag& plot = 
-				// 		if (pdata.chennal_num >= 1) {
-				// 			ImPlot::PlotLine(x_label_buf, pdata.plot_t, pdata.plot_x, plot_N, 0);
-				// 		}
-				// 		if (pdata.chennal_num >= 2) {
-				// 			ImPlot::PlotLine(y_label_buf, pdata.plot_t, pdata.plot_y, plot_N, 0);
-				// 		}
-				// 		if (pdata.chennal_num >= 3) {
-				// 			ImPlot::PlotLine(p_label_buf, pdata.plot_t, pdata.plot_p, plot_N, 0);
-				// 		}
-				// 		if (pdata.chennal_num >= 4) {
-				// 			ImPlot::PlotLine(q_label_buf, pdata.plot_t, pdata.plot_q, plot_N, 0);
-				// 		}
-				// 		break;
-				// 	}
-				// 	case 1: {	//空间向量
-				// 		ImPlot::SetupAxes("A","B", x_axis_param, y_axis_param);
-				// 								ImPlot::GetStyle().LineWeight = 2;
-				// 		ImPlot::SetupLegend(ImPlotLocation_NorthEast);
-				// 		ImPlot::PlotLine("X-Y", pdata.plot_x, pdata.plot_y, plot_N, 0);
-				// 		ImPlot::PlotLine("X-Z", pdata.plot_x, pdata.plot_p, plot_N, 0);
-				// 		ImPlot::PlotLine("Y-Z", pdata.plot_y, pdata.plot_p, plot_N, 0);
-				// 		break;
-				// 	}
-				// }
+						// ImHasFlag& plot = 
+						if (pdata.chennal_num >= 1) {
+							ImPlot::PlotLine(x_label_buf, pdata.plot_t, pdata.plot_x, plot_N, 0);
+						}
+						if (pdata.chennal_num >= 2) {
+							ImPlot::PlotLine(y_label_buf, pdata.plot_t, pdata.plot_y, plot_N, 0);
+						}
+						if (pdata.chennal_num >= 3) {
+							ImPlot::PlotLine(p_label_buf, pdata.plot_t, pdata.plot_p, plot_N, 0);
+						}
+						if (pdata.chennal_num >= 4) {
+							ImPlot::PlotLine(q_label_buf, pdata.plot_t, pdata.plot_q, plot_N, 0);
+						}
+						break;
+					}
+					case 1: {	//空间向量
+						ImPlot::SetupAxes("A","B", x_axis_param, y_axis_param);
+												ImPlot::GetStyle().LineWeight = 2;
+						ImPlot::SetupLegend(ImPlotLocation_NorthEast);
+						ImPlot::PlotLine("X-Y", pdata.plot_x, pdata.plot_y, plot_N, 0);
+						ImPlot::PlotLine("X-Z", pdata.plot_x, pdata.plot_p, plot_N, 0);
+						ImPlot::PlotLine("Y-Z", pdata.plot_y, pdata.plot_p, plot_N, 0);
+						break;
+					}
+				}
 
 
 
