@@ -13,5 +13,11 @@
         "cwd": "${workspaceFolder}"
         }
     ],
-    "miDebuggerPath":"G:/Workbench/Toolchain/TDM_GCC/bin/gdb.exe"
+    "windows": {
+        "miDebuggerPath":"G:/Workbench/Toolchain/TDM_GCC/bin/gdb.exe"
+    },
+    "linux": {
+        "miDebuggerPath":"/usr/bin/gdb"
+    }
+    
 }
