@@ -36,6 +36,16 @@ protected:
 	uint16_t payload_size;			//载荷长度
 	uint8_t protocol_size;			//协议帧除载荷外总长
 
+	/**
+	 * @brief 发送帧
+	 * 
+	 */
+	uint8_t tx_address;				// 地址
+	uint8_t tx_msg_id;				// ID
+	uint8_t tx_seq;					// 发送包序号
+	uint8_t tx_payload[300];		// 发送帧头载荷
+	uint16_t tx_payload_size;		// 发送载荷长度
+	
 
 	/**
 	 * @brief 解析函数需要的成员变量
@@ -52,10 +62,13 @@ protected:
 	uint8_t state;
 	uint8_t payload_cnt;
 	uint8_t crc[4];
+	uint8_t tx_crc[4];
 	uint8_t crc_len;
 	uint8_t crc_cnt;
-	uint8_t buffer[300];		// 发送或接受组成缓冲区
-	uint16_t cnt;				// 接收缓冲区计数
+	uint8_t rx_buffer[300];		// 接受组成缓冲区
+	uint16_t rx_cnt;			// 接收缓冲区计数
+	uint8_t tx_buffer[300];		// 发送缓冲区
+	uint8_t tx_cnt;				// 发送缓冲区计数
 
 	bool is_complete;			// 是否完成接收或发送准备
 	bool is_initalized;			// 是否完成初始化
@@ -85,8 +98,8 @@ public:
 	UartConnect();
 	virtual ~UartConnect();
 
-	void InitRx(UartRecevice read_func);
-	void InitTx(UartTransmit transmit_func);
+	void Init(UartRecevice read_func);
+	void Init(UartTransmit transmit_func);
 	virtual bool LaunchSend(msg::Message* msg) {return false;}
 	virtual void Update();
 };

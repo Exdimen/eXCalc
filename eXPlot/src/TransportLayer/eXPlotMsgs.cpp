@@ -7,6 +7,7 @@
 
 #include <eXPlotMsgs.h>
 #include "eXPlot.h"
+#include "SystemExtra.h"
 namespace debugger {
 
 ValueTx::ValueTx(uint8_t _len) {
@@ -36,12 +37,10 @@ void ValueTx::Encode(uint8_t* payload) {
 	memcpy				(&payload[len_cnt], value, len * sizeof(float));
 	len_cnt += len * sizeof(float);
 }
-// float temp;
+
 void ValueTx::UpdataData() {
-	// if (len == 1) {
-	// 	value[0] = temp;
-	// }
-	// timestamp = millis();
+	send_call(this);
+	timestamp = millis();
 }
 
 

@@ -9,15 +9,34 @@
 #define CONNECTINTERFACE_H_
 
 
+#include <CSerialPort/SerialPort.h>
+#include <CSerialPort/SerialPortInfo.h>
+
+
 #include "eXPlotConnect.h"
 #include "eXPlotMsgs.h"
-#include "CSerialPort/SerialPort.h"
-#include "CSerialPort/SerialPortInfo.h"
+
+#include "VisionSensorConnect.h"
+#include "VisionSensorMsgs.h"
+
+#include "TxInvoker.h"
+#include "SerialInterface.h"
+
+// 传输链接句柄
+
 
 
 #define CHANNEL_THRESHOLD   0.2f        // 通道阈值 
 
 // using namespace sbus;
+
+extern msg::TxInvoker* htx;
+extern debugger::ValueTx* msgtx_vt;
+
+extern sensor::VisionSensorConnect* hvsc;
+extern debugger::eXPlotConnect* hepc;
+extern itas109::CSerialPort* serial_port;
+extern edm_comm::SerialInterface* serial_interface;
 
 // extern CSerialPort* Serial;
 

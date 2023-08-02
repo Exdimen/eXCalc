@@ -26,6 +26,7 @@ public:
 	virtual void Execute() {};
 	virtual void UpdataData() {};		// 循环发送时更新数据
 	uint8_t GetLen() {return len_cnt;} // 获取载荷长度，编码后有效
+	virtual uint8_t GetMsgID() {return msg_id;}
 };
 
 } /* namespace msg */

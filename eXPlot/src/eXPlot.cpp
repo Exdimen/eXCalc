@@ -1,23 +1,24 @@
 ﻿#include "App.h"
 #include <stdio.h>
-#include <Windows.h>
+
 #include <queue>
 #include <thread>
 #include <random>
 #include "implot_internal.h"
 
+
+#include "SerialInterface.h"
 #include "eXPlot.h"
-#include "SerialPort.h"
 #include "ConnectInterface.h"
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) 
 # pragma execution_character_set("utf-8") 
 #endif
 
-HANDLE hCom = NULL;
 std::queue<int> qData;
 
-
+// itas109::CSerialPort serial_port;
+// SerialInterface serial_interface(&serial_port);
 
 PlotData pdata = {0};
 
@@ -43,24 +44,27 @@ struct ImLearn : public App {
 
 		ImGui::Text("端口号：");
 		ImGui::SameLine();
-		//	//设置下拉列表框 & 枚举选项
+			//设置下拉列表框 & 枚举选项
 		static std::string com = "NULL";
-		std::vector<std::string> serialList;
-		ImGui::SetNextItemWidth(100);
+		std::vector<SerialPortInfo> serialList;
+		ImGui::SetNextItemWidth(300);
 		if (ImGui::BeginCombo(" ", com.c_str())) {
-			EnumSerial(serialList);
+			// 获取串口列表
+			serialList = CSerialPortInfo::availablePortInfos();
+			// EnumSerial(serialList);
+			
 			if (serialList.size() == 0) ImGui::Selectable("NULL", false);
 			else {
 				for (int i = 0; i < serialList.size(); ++i) {
-					bool isSelect = serialList.at(i) == com;
-					if (ImGui::Selectable(serialList.at(i).c_str(), isSelect)) {
-						com = serialList.at(i);
+					bool isSelect = serialList[i].portName == com;
+					if (ImGui::Selectable(serialList[i].portName, isSelect)) {
+						com = serialList[i].portName;
 					}
 				}
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::PushItemWidth(100);
+		ImGui::PushItemWidth(300);
 		ImGui::SameLine();
 		static int baud_rate = 115200;
 		ImGui::Text("波特率：");
@@ -71,21 +75,23 @@ struct ImLearn : public App {
 		ImGui::SameLine();
 		// 点击连接按钮事件
 		std::string strState;
-		if (Serial->m_bOpen) {
+		if (serial_port->isOpen()) {
 			ImGui::SameLine();
 			if (ImGui::Button("断开")) {
-				Serial->closeComm();
+				serial_port->close();
+				serial_port->disconnectReadEvent();
 			}
 		}
 		else {
 			if (ImGui::Button("连接")) {
-				Serial->setConfig(com,  baud_rate, 8, NOPARITY, 1);
-				Serial->openComm();
+				serial_port->init(com.c_str(),baud_rate);
+				serial_port->open();
+				serial_port->connectReadEvent(serial_interface);
 			}
 		}
 
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);
-		ImGui::Text("eXPlot V0.0.1 Exdimen");
+		ImGui::Text("eXPlot V0.0.2 Exdimen");
 
 		// 状态栏标题行
 		{ float delta_line = 0.15f;
@@ -95,21 +101,26 @@ struct ImLearn : public App {
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
 			ImGui::Text("Rx字节数");
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
-			ImGui::Text("当前传输数据速率Kbps");
-		
+			ImGui::Text("发送数据速率Kbps");
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*4);
+			ImGui::Text("接收数据速率Kbps");
 
 
 		// 状态栏状态行
-			if (Serial->m_bOpen) {
+			if (serial_port->isOpen()) {
 				ImGui::TextColored(ImVec4(0.0f, 1.0f, 1.0f, 1.0f), "Connect");
 			}
 			else {
 				ImGui::TextDisabled("Disconnect");
 			}
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line);
+			ImGui::Text("%d",serial_interface->get_tx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*2);
-			ImGui::Text("%d",Serial->rx_cnt);
+			ImGui::Text("%d",serial_interface->get_rx_cnt());
 			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*3);
-			ImGui::Text("%.2f",Serial->rx_speed);
+			ImGui::Text("%.2f",serial_interface->get_tx_speed());
+			ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * delta_line*4);
+			ImGui::Text("%.2f",serial_interface->get_rx_speed());
 		}
 		ImGui::SameLine(ImGui::GetWindowContentRegionWidth() * 0.85f);
 		ImGui::Text("%.1f FPS", ImGui::GetIO().Framerate);
@@ -277,7 +288,7 @@ struct ImLearn : public App {
 
 
 			// plot waveforms
-			if (ImPlot::BeginPlot("##Filter",ImVec2(-1,-1))) {
+			if (ImPlot::BeginPlot("Data",ImVec2(-1,-1))) {
 				ImPlotAxisFlags x_axis_param;
 				ImPlotAxisFlags y_axis_param;
 				if (is_x_autofit) {
@@ -347,7 +358,7 @@ struct ImLearn : public App {
 
 
 void App(int argc, char const* argv[]) {
-	ImLearn app("eXPlot", 960, 540, argc, argv);
+	ImLearn app("eXPlot", 1920, 1080, argc, argv);
 	app.Run();
 }
 
