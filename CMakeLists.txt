@@ -8,10 +8,10 @@ if(CMAKE_HOST_WIN32)
 endif()
 
 
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
-  CACHE STRING "Vcpkg toolchain file")
+# set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+#   CACHE STRING "Vcpkg toolchain file")
    
-project ("eXPlot")
+project ("eXCalc")
 
 if(CMAKE_HOST_WIN32)
 #  include_directories("mingw_stdthreads")
@@ -21,4 +21,4 @@ endif()
 #    add_subdirectory("mingw_stdthreads")
 
 # 包含子项目。
-add_subdirectory ("eXPlot")
+add_subdirectory ("eXCalc")
