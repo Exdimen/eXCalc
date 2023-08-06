@@ -86,6 +86,6 @@ int main(int argc, char const* argv[]) {
 	std::cout 	<< "Done!" << std::endl
 				<< std::fixed << std::setprecision(2) << "mean = "<< mean
 				<< std::endl;
-	std::cin.get();
+	while(1);
 	return 0;
 }
