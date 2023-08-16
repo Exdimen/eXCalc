@@ -2,3 +2,10 @@
 // 或项目特定的包含文件。
 
 #pragma once
+
+#define TACTICS_REINFORCE
+
+struct CoreCnt {
+    int try_cnt;
+    int reinforce_cnt;
+};
